@@ -1,9 +1,10 @@
-//import styled from 'styled-components'; // é uma biblioteca aparte do react mas pode ser usada em conjunto
+import React from 'react';
 import MainGrid from  '../src/components/MainGrid';
-import Box from  '../src/components/Box';
+import {AlurakutMenu} from '../src/lib/AlurakutCommons'; // necessita do {} pq não é export default
 import ProfileSideBar from  '../src/components/ProfileSideBar';
+import WelcomeArea from '../src/components/WelcomeArea';
 import RelationsArea from  '../src/components/RelationsArea';
-import {AlurakutMenu, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons'; // necessita do {} pq não é export default
+
 
 
 
@@ -25,7 +26,13 @@ requestFollowers = async(userName) => {
 
 async function requestFollowers(userName, followers) {
   const req = new Request(`http://api.github.com/users/${userName}/followers`);
+  fetch(req)
+  .then(res => res.json())
+  .then(data => followers = data)
+  .then(console.log(followers))
+  /*
   try{
+    
     let response = await fetch(req); 
     let data = await response.json();   
     data.map((e) =>{
@@ -37,6 +44,7 @@ async function requestFollowers(userName, followers) {
   catch(error){
     console.log(error)
   }
+  */
 }
 
 //XMLHttpRequest não serve é request para o server local? NAO! é para binários e etc
@@ -44,24 +52,13 @@ async function requestFollowers(userName, followers) {
 
 export default function Home() {
   const userName = "mttorres";
-  // podia separar em uma componente?
-  /*
-  const followers = this.state.Data?.map((f, i) => (
-    <li key={i}>
-        <a href={`https://github.com/${f.login}`} key={f.login} >
-          <img src={`https://github.com/${f.login}.png`}></img>
-          <span>{f.login}</span>
-        </a>      
-    </li>
-  ));
-  */
-  
-  //const followers = [];
-  //requestFollowers(userName,followers);
-  //console.log(followers);
-  // ta seguindo pro return não esperando a variável (nao podemos usar await aqui porque o react não aceita retorno como promisse)
-  
-  const followers = [{"login": "petrolifero"}, {"login": "gustavopergola"}, {"login": "Moutella",}, {"login": "caio-guimaraes"}]
+  const followers = [{"id": "1", "login": "petrolifero"}, {"id": "2", "login": "gustavopergola"}, 
+  {"id": "3", "login": "Moutella"}, {"id": "4", "login": "caio-guimaraes"}]
+  const [comunidades, setComunidades] = React.useState(
+    [{"id": "1", "nome": 'Grand Chase - BR', "imagem": "https://tecnoblog.net/wp-content/uploads/2021/06/grand-chase.jpg"}, 
+    { "id": "2", "nome": 'Guilty Gear - CHAMP', "imagem":"https://www.arkade.com.br/wp-content/uploads/2021/06/guilty-gear-capa-1050x591.jpg"}, 
+    { "id": "3", "nome": 'Ja morri pro minotauro 100 vezes', "imagem": "https://i.ytimg.com/vi/qC4qrA3BXfU/maxresdefault.jpg"}, 
+    { "id": "4", "nome": 'Li esse livro entendi, mas não queria ter', "imagem": "https://miro.medium.com/max/500/1*DDsOx6D3oe8ZxcA-OTfIDA.jpeg"}]);
   return (
   <> 
   <AlurakutMenu githubUser={userName}/> 
@@ -69,13 +66,8 @@ export default function Home() {
     <div className="profileArea" style={{gridArea: 'profileArea'}}>
         <ProfileSideBar githubUser={userName} />
     </div>    
-    <div className="welcomeArea" style={{gridArea: 'welcomeArea'}}>
-      <Box>
-        <h1 className="title">Bem Vindo(a)</h1>
-        <OrkutNostalgicIconSet videos={999} confiavel={3} legal={3}  />   
-      </Box>         
-    </div>
-      <RelationsArea followers={followers} />
+    <WelcomeArea userStatVideos={999} userStatconfiavel={3} userStatLegal={3} community={comunidades} seterCommunity = {setComunidades} />
+    <RelationsArea followers={followers} community={comunidades} />
   </MainGrid>
   </> );
 }
