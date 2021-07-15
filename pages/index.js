@@ -11,7 +11,7 @@ export default function Home() {
   const userName = "mttorres";
   const [followers, setFollowers] = React.useState([]);
   React.useEffect(() => {
-    const req = new Request(`http://api.github.com/users/${userName}/followers`);
+    const req = new Request(`https://api.github.com/users/${userName}/followers`);
     fetch(req)
     .then((res) => {
       if(res.ok){
@@ -19,7 +19,8 @@ export default function Home() {
       }
       throw new Error('Request has returned: '+res.status) 
     })  
-    .then((data) => setFollowers(data));    
+    .then((data) => setFollowers(data))
+    .catch(erro => console.log(erro));    
   }, []); // passar variáveis para ese array faz ele executar isso toda vez que essa é alterada
   // não passar nada para o array implica em uma execução unica. 
 
