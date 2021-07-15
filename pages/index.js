@@ -19,8 +19,7 @@ export default function Home() {
       }
       throw new Error('Request has returned: '+res.status) 
     })  
-    .then((data) => setFollowers(data))
-    .catch(erro => console.log(erro));    
+    .then((data) => setFollowers(data));    
   }, []); // passar variáveis para ese array faz ele executar isso toda vez que essa é alterada
   // não passar nada para o array implica em uma execução unica. 
 
