@@ -13,9 +13,9 @@ function CommunityForm(prop){
             console.log(dadosForm.get('image'));
             let image = dadosForm.get('image'); 
             let tempURL = URL.createObjectURL(image); // temp url
-            console.log(tempURL);
+            //console.log(tempURL);
             image.url = tempURL;
-            prop.seterCommunity([...prop.community, { "id": (Math.random() * (4 - 1) + 1).toString() , "title": name, "image": image}])
+            prop.seterCommunity([{ "id": (Math.random() * (4 - 1) + 1).toString() , "title": name, "image": image}, ...prop.community])
         }}>
             <div>
                 <input 
