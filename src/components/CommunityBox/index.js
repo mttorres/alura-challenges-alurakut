@@ -10,7 +10,7 @@ function CommunityBox(prop){
         <ul>
           
           {limitItensBox.map((elem) => {
-            const imgLink = prop.imgLinkPrefix?  prop.imgLinkPrefix + `${elem[prop.imgprop.toString()]}.png`  : elem[prop.imgprop.toString()];
+            const imgLink = prop.imgLinkPrefix?  prop.imgLinkPrefix + `${elem[prop.imgprop.toString()]}.png`  : elem[prop.imgprop.toString()]['url'];
             const linkCommu = prop.pageLinkPrefix?  prop.pageLinkPrefix + `${elem[prop.linkprop.toString()]}` : elem[prop.linkprop.toString()]
             return (
             <li key={`${elem.id}`}>
