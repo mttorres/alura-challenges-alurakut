@@ -10,8 +10,12 @@ function CommunityForm(prop){
             e.preventDefault();
             let dadosForm = new FormData(e.target);
             let name = dadosForm.get('title');
+            console.log(dadosForm.get('image'));
             let image = dadosForm.get('image'); 
-            prop.seterCommunity([...prop.community, { "id": (Math.random() * (4 - 1) + 1).toString() , "nome": name, "imagem": image}])
+            let tempURL = URL.createObjectURL(image); // temp url
+            console.log(tempURL);
+            image.url = tempURL;
+            prop.seterCommunity([...prop.community, { "id": (Math.random() * (4 - 1) + 1).toString() , "title": name, "image": image}])
         }}>
             <div>
                 <input 
@@ -21,11 +25,13 @@ function CommunityForm(prop){
                 type= "text" />
             </div>
             <div>
+                <h4 className="subTitle">Escolha uma foto para sua comunidade</h4>
                 <input type="file" 
-                placeholder= "Coloque uma URL para usarmos de capa"
-                aria-label="Coloque uma URL para usarmos de capa" 
+                placeholder= "Escolha uma foto para sua comunidade"
+                aria-label="Escolha uma foto para sua comunidade" 
+                name= "image"
                 onChange={function handleFile(e){
-                    
+                    console.log("recebi arquivo");
                 }} />
             </div>     
             <button>

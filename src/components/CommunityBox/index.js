@@ -1,7 +1,7 @@
 import { ProfileRelationsBoxWrapper } from '../ProfileRelations';
 
 function CommunityBox(prop){
-    const limitItensBox = prop.data.slice().splice(0,6);
+    const limitItensBox = prop.data.slice();
     return (
       <ProfileRelationsBoxWrapper>
         <h2 className="smallTitle">
@@ -10,7 +10,8 @@ function CommunityBox(prop){
         <ul>
           
           {limitItensBox.map((elem) => {
-            const imgLink = prop.imgLinkPrefix?  prop.imgLinkPrefix + `${elem[prop.imgprop.toString()]}.png`  : elem[prop.imgprop.toString()]['url'];
+            const imgLink = prop.imgLinkPrefix?  prop.imgLinkPrefix + `${elem[prop.imgprop.toString()]}.png`  : 
+            elem[prop.imgprop.toString()]['url']? elem[prop.imgprop.toString()]['url'] : elem[prop.imgprop.toString()]['name']; 
             const linkCommu = prop.pageLinkPrefix?  prop.pageLinkPrefix + `${elem[prop.linkprop.toString()]}` : elem[prop.linkprop.toString()]
             return (
             <li key={`${elem.id}`}>
