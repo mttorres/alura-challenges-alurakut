@@ -46,7 +46,7 @@ export function doPutFile(url, file, token){
       });
 
     })
-    .catch((error) => console.error(error))
+    .catch((error) => { console.error(error); throw new Error('Request has returned: '+error)} )
 }
 
 export function doGet(url, token){
