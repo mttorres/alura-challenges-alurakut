@@ -34,7 +34,7 @@ export default async function requestInterceptor(request, response){
             message: 'Invalid Method Request'
         })        
     } catch(e){
-        response.json({
+        response.status(500).json({
             message: e
         });
     }
