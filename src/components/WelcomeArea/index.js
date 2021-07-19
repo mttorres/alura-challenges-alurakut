@@ -9,7 +9,7 @@ function WelcomeArea(prop){
             <h1 className="title">Bem Vindo(a)</h1>
             <OrkutNostalgicIconSet videos={prop.userStatVideos} confiavel={prop.userStatconfiavel} legal={prop.userStatLegal}  />   
         </Box>
-        <CommunityForm community={prop.community} seterCommunity = {prop.seterCommunity} />
+        <CommunityForm userName= {prop.userName} community={prop.community} seterCommunity = {prop.seterCommunity} />
         </div>);
 }
 
