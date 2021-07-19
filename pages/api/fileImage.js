@@ -9,8 +9,9 @@ export default async function requestInterceptor(request, response){
             (err) => {
                     if(err){
                         console.log('Error!');
-                        console.log(err);
-                        throw err;
+                        response.status(500).json({
+                            message:  err
+                        })
                     }
             });
             console.log('image saved into cache');
