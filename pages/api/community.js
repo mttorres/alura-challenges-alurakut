@@ -28,10 +28,10 @@ export default async function requestInterceptor(request, response){
         response.json({
             record: record
         });
-        return;
     }
-
-    response.status(405).json({
-        message: 'Invalid Method Request'
-    })
+    else {
+        response.status(405).json({
+            message: 'Invalid Method Request'
+        })
+    }
 }

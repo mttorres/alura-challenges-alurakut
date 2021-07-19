@@ -15,11 +15,10 @@ export default async function requestInterceptor(request, response){
         response.status(201).json({
             message: 'image saved into cache'
         })
-        return;
-
     }
-    response.status(405).json({
-        message: 'Invalid Method Request'
-    })
-    return;
+    else {
+        response.status(405).json({
+            message: 'Invalid Method Request'
+        })        
+    }
 }
