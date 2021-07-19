@@ -1,42 +1,39 @@
-import React from 'react';
+import {doPost, doPutFile} from './general';
+import {tokenRO} from '../../config/config';
 
-function requestCommu(setCommu){
+export function requestAllCommu(){
     // token read-only
-    React.useEffect(() => {
-      const url = 'https://graphql.datocms.com/'; // "Bloqueio de conteúdo misto no Firefox"
-      const headerAndbody = {
-        method: 'POST',
-        headers: {
-          'Authorization' : 'e9e5f9eb852d053b85e0c5d9f7208e',
-          'Content-Type'  : 'application/json',
-          'Accept'  : 'application/json' 
-        },
-        body: JSON.stringify({"query": `{
-          allCommunities {
-            id
-            title
-            link
-            image {
-              id
-              url
-            }
-            imageUrl
-            creatorSlug
-            _status
-            _firstPublishedAt
-          }
-        }`})
-      }
-      fetch(url, headerAndbody)
-      .then((res) => {
-        if(res.ok){
-          return res.json();
+    const body = {"query": `{
+      allCommunities {
+        id
+        title
+        link
+        image {
+          id
+          url
         }
-        throw new Error('Request has returned: '+res.status) 
-      })  
-      .then(returnRes => setCommu(returnRes.data.allCommunities))
-      .catch(erro => console.log(erro));    
-    }, []); 
+        imageUrl
+        creatorSlug
+        _status
+        _firstPublishedAt
+      }
+    }`};
+    return doPost('https://graphql.datocms.com/', body, tokenRO)
+    .then(returnRes => returnRes.data.allCommunities)
+    .catch((erro) => {
+      console.log(erro);
+      return [];
+    }); 
 }
 
-export default requestCommu;
+export async function requestSaveCommu(body){
+  doPutFile('/api/fileImage', body.image, null);
+  console.log('body???');
+  console.log(body);
+  return doPost('/api/community', body, tokenRO)
+  .then((returnRes) => {console.log('nova comunidade '+returnRes.toString()); return returnRes})
+  .catch((erro) => {
+    console.log(erro);
+    return;
+  });  
+}
