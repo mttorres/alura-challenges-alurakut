@@ -1,3 +1,5 @@
+import convertAsDataURL from '../util/fileConverter'
+
 export function doPost(url, body, token){
     const headerAndbody = {
       method: 'POST',
@@ -17,38 +19,28 @@ export function doPost(url, body, token){
         });
 }
 
-export async function doPostFile(url, file, token){
-  const reader = new FileReader(file);
-  let toSend = null;
-  reader.onerror = function(event) {
-    alert("Failed to read file!\n\n" + reader.error);
-    reader.abort(); // (...does this do anything useful in an onerror handler?)
-  };
+export function doPutFile(url, file, token){
+    convertAsDataURL(file)
+    .then((result) => {
+      const headerAndbody = {
+        method: 'PUT',
+        headers: {
+          'Authorization' : token,
+          'Content-Type' : file.type
+        },
+        body: result
+      }
+      delete headerAndbody.headers['Content-Type'];
+      return fetch(url, headerAndbody)
+      .then((res) => {
+        if(res.ok){
+          return res.json();
+        }
+        throw new Error('Request has returned: '+res.status) 
+      });
 
-  await reader.readAsDataURL(file);
-  reader.onloadend = function () {
-    toSend = reader.result;
-    console.log('sucesso!');
-    console.log(toSend);
-    const headerAndbody = {
-      method: 'PUT',
-      headers: {
-        'Authorization' : token,
-        'Content-Type' : file.type
-      },
-      body: toSend
-    }
-    console.log("body: ");
-    console.log(toSend);
-    delete headerAndbody.headers['Content-Type'];
-    return fetch(url, headerAndbody)
-        .then((res) => {
-          if(res.ok){
-            return res.json();
-          }
-          throw new Error('Request has returned: '+res.status) 
-        });
-  }
+    })
+    .catch((error) => console.error(error))
 }
 
 export function doGet(url, token){
