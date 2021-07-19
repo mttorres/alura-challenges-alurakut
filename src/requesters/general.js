@@ -36,7 +36,13 @@ export function doPutFile(url, file, token){
         if(res.ok){
           return res.json();
         }
-        throw new Error('Request has returned: '+res.status) 
+        else{
+          res.json()
+          .then((deta) => {
+            console.log(deta); 
+          })
+          throw new Error('Request has returned: '+res.status); 
+        }
       });
 
     })

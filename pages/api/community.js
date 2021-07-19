@@ -7,7 +7,7 @@ export default async function requestInterceptor(request, response){
     console.log(request);
     // poderia ser put né...
     if(request.method == 'POST'){
-        const path = await client.createUploadPath('./local-image-cache/temp-image.png');
+        const path = await client.createUploadPath('./pages/local-image-cache/temp-image.png');
         const upload = await client.uploads.create({
             path,
 

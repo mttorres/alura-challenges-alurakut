@@ -3,15 +3,15 @@ import fs from 'fs';
 export default async function requestInterceptor(request, response){
     if(request.method == 'PUT'){
         //melhorar depois
-        fs.writeFile(`./local-image-cache/temp-image.png`, Buffer.from(request.body.replace(/^data:image\/\w+;base64,/, ""),'base64'),
+        fs.writeFile(`./pages/local-image-cache/temp-image.png`, Buffer.from(request.body.replace(/^data:image\/\w+;base64,/, ""),'base64'),
         (err) => {
                 if(err){
                     console.log('Error!');
                     console.log(err);
                     throw err;
                 }
-                //console.log('image saved into cache');
         });
+        console.log('image saved into cache');
         response.status(201).json({
             message: 'image saved into cache'
         })
