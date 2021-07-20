@@ -9,12 +9,12 @@ export default async function requestInterceptor(request, response){
                     console.log('Error!');
                     console.log(err);
                     throw err;
+                } else{
+                    response.status(201).json({
+                        message: 'image saved into cache'
+                    })
                 }
         });
-        console.log('image saved into cache');
-        response.status(201).json({
-            message: 'image saved into cache'
-        })
     }
     else {
         response.status(405).json({

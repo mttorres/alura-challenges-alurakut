@@ -1,4 +1,6 @@
 import React from 'react';
+import nookies from 'nookies';
+import jwt from 'jsonwebtoken';
 import MainGrid from  '../src/components/MainGrid';
 import {AlurakutMenu} from '../src/lib/AlurakutCommons'; // necessita do {} pq não é export default
 import ProfileSideBar from  '../src/components/ProfileSideBar';
@@ -6,11 +8,12 @@ import WelcomeArea from '../src/components/WelcomeArea';
 import RelationsArea from  '../src/components/RelationsArea';
 import requestFollowers from '../src/requesters/followers';
 import {requestAllCommu} from '../src/requesters/community';
+import { doPost } from '../src/requesters/general';
 
 //XMLHttpRequest não serve é request para o server local? NAO! é para binários e etc
 
-export default function Home() {
-  const userName = "mttorres";
+export default function Home(props) {
+  const userName = props.githubUser;
   const [followers, setFollowers] = React.useState([]);
   React.useEffect(() => {
     requestFollowers(userName)
@@ -38,4 +41,28 @@ export default function Home() {
     <RelationsArea galera ={galera} followers={followers} community={comunidades} />
   </MainGrid>
   </> );
+}
+
+
+export async function getServerSideProps(context){
+  const cookies =  nookies.get(context);
+  const token = cookies.USER_TOKEN;
+  const { githubUser } = jwt.decode(token);
+
+  const { isAuthenticated } = await doPost('https://alurakut.vercel.app/api/auth', null, token);
+  if(isAuthenticated){
+    console.log('segura piao');
+    return {
+      props: {githubUser}
+    }    
+  }
+  else{
+     return {
+       redirect: {
+         destination: '/login',
+         permanent: false,
+
+       }
+     }
+  }
 }
