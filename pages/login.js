@@ -6,6 +6,26 @@ import nookies from 'nookies';
 export default function LoginPage(){
   const router = useRouter();
   const [githubUser, setGithubUser] = React.useState('');
+
+  function handleLogin(e) {
+    e.preventDefault();
+    if(githubUser.length != 0){
+      doPost('https://alurakut.vercel.app/api/login',{githubUser : githubUser})
+      .then((resposta) => {
+          if(resposta.token){
+            nookies.set(null, 'USER_TOKEN', resposta.token, {path: '/', maxAge: 86400*7});
+            router.push('/');
+          }
+          else {
+            alert("O usuário informado não pode ser validado. \n Você tem um usuário no GitHub?");
+          }
+      });                      
+    }
+    else{
+      alert("Favor informar um usuário!");
+    }
+  }
+
   return (
     <main style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <div className="loginScreen">
@@ -18,19 +38,7 @@ export default function LoginPage(){
         </section>
 
         <section className="formArea">
-          <form className="box" onSubmit={(event) => {
-                event.preventDefault();
-                if(githubUser.length != 0){
-                  doPost('https://alurakut.vercel.app/api/login',{githubUser : githubUser})
-                  .then((resposta) => {
-                      nookies.set(null, 'USER_TOKEN', resposta.token, {path: '/', maxAge: 86400*7});
-                      router.push('/');
-                  });                      
-                }
-                else{
-                  alert("Favor informar um usuário!");
-                }
-            }} >
+          <form className="box" onSubmit={handleLogin} >
             <p>
               Acesse agora mesmo com seu usuário do <strong>GitHub</strong>!
           </p>
