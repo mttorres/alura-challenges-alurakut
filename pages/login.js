@@ -20,7 +20,7 @@ export default function LoginPage(){
         <section className="formArea">
           <form className="box" onSubmit={(event) => {
                 event.preventDefault();
-                doPost('https://alurakut.vercel.app/api/login',{githubUser : githubUser,})
+                doPost('https://alurakut.vercel.app/api/login',{githubUser : githubUser})
                 .then((resposta) => {
                     nookies.set(null, 'USER_TOKEN', resposta.token, {path: '/', maxAge: 86400*7});
                     router.push('/');

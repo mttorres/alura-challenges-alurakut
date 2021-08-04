@@ -47,22 +47,25 @@ export default function Home(props) {
 export async function getServerSideProps(context){
   const cookies =  nookies.get(context);
   const token = cookies.USER_TOKEN;
-  const { githubUser } = jwt.decode(token);
+  let isAuthenticated = false;
+  let githubUser;
 
-  const { isAuthenticated } = await doPost('https://alurakut.vercel.app/api/auth', null, token);
+  if(token) {
+    githubUser  = jwt.decode(token).githubUser;
+    isAuthenticated = await doPost('https://alurakut.vercel.app/api/auth', null, token);
+  } 
   if(isAuthenticated){
-    console.log('segura piao');
     return {
       props: {githubUser}
     }    
   }
-  else{
-     return {
-       redirect: {
-         destination: '/login',
-         permanent: false,
+  else {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
 
-       }
-     }
+      }    
+    }
   }
 }
