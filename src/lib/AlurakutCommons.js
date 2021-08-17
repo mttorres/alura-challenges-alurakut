@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import NextLink from 'next/link';
-import nookies from 'nookies';
 import { useRouter } from 'next/router'
+import { applyLogoutConfig } from '../util/cookie/cookieHelper'
 
 const BASE_URL = 'http://alurakut.vercel.app/';
 const v = '1';
@@ -27,7 +27,7 @@ export function AlurakutMenu({ githubUser }) {
 
   function handleLogout(e) {
     e.preventDefault();    
-    nookies.destroy(null, 'USER_TOKEN');
+    applyLogoutConfig(); // nesse caso é simples, mas poderia ter um request que nem o login
     router.push('/');
   }
 

@@ -1,29 +1,30 @@
 import React from 'react';
 import { useRouter } from 'next/router'
-import { doPost } from '../src/requesters/general';
-import nookies from 'nookies';
+import { applyLoginConfig } from '../src/util/cookie/cookieHelper'
 
 export default function LoginPage(){
   const router = useRouter();
   const [githubUser, setGithubUser] = React.useState('');
 
-  function handleLogin(e) {
+  const [userExistsError, setUserExistsError] = React.useState(false);
+  const [triedToLogin, setTry] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  async function handleLogin(e) {
     e.preventDefault();
-    if(githubUser.length != 0){
-      doPost('https://alurakut.vercel.app/api/login',{githubUser : githubUser})
-      .then((resposta) => {
-          if(resposta.token){
-            nookies.set(null, 'USER_TOKEN', resposta.token, {path: '/', maxAge: 86400*7});
-            router.push('/');
-          }
-          else {
-            alert("O usuário informado não pode ser validado. \n Você tem um usuário no GitHub?");
-          }
-      });                      
+    setIsLoading(true);
+    setTry(triedToLogin+1);
+    let result = await applyLoginConfig(githubUser);
+    if(result === 0){
+      console.log(result);
+      console.log('LOGANDO!');
+      router.push('/');  
     }
-    else{
-      alert("Favor informar um usuário!");
+    if(result === 1){
+      console.log('set error!');
+      setUserExistsError(true);
     }
+    setIsLoading(false);
   }
 
   return (
@@ -44,12 +45,19 @@ export default function LoginPage(){
           </p>
             <input placeholder="Usuário" 
             value={githubUser} 
-            onChange={(event) => {
-                setGithubUser(event.target.value);
-            }} />
-            {githubUser.length == 0? 'Preencha o campo ' : ''}    
-            <button type="submit">
-              Login
+            onChange={(event) => setGithubUser(event.target.value.trim().toLowerCase())} />
+            {githubUser.length !== 0 && userExistsError && (              
+              <span style={{ fontSize: '13px', color: 'red', marginBottom: '12px' }}>
+                O usuário informado não pode ser validado. Você tem um usuário no GitHub?
+              </span>)}   
+            {triedToLogin > 0 && githubUser.length === 0 && (              
+              <span style={{ fontSize: '13px', color: 'red', marginBottom: '12px' }}>
+                Favor informar um usuário!
+              </span>)}              
+              
+
+            <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Entrando...' : 'Login'}
             </button>
           </form>
 
