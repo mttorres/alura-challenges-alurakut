@@ -52,9 +52,31 @@ const Box = styled.div`
     border: 0;
     padding: 8px 12px;
     color: #FFFFFF;
-    border-radius: 10000px;
+    border-radius: 8px;
     background-color: #6F92BB;
+    font-size: 14;
   }
+
+  .formOptions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    min-height: 86px;
+    background-color: #f4f4f4;
+    color: #333333;
+    border: 0;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    font-family: sans-serif;
+    font-size: 14;
+    resize: vertical;
+
 `; 
 
 export default Box
