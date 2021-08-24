@@ -8,7 +8,6 @@ function CommunityBox(prop){
           {prop.title}  ({(prop.data.length)})
         </h2>
         <ul>
-          
           {limitItensBox.map((elem) => {
             const imgLink = prop.imgLinkPrefix?  prop.imgLinkPrefix + `${elem[prop.imgprop.toString()]}.png`  : 
             elem[prop.imgprop] ? elem[prop.imgprop.toString()]['url'] : elem['imageUrl']; // temp até resolver o upload de imagem
@@ -21,7 +20,17 @@ function CommunityBox(prop){
               </a>
             </li>);
           })}
-        </ul>  
+        </ul> 
+        {prop.data.length > 6 && (  
+          <div>
+            <hr />
+            <p>
+              <a className="boxLink" href={prop.seeall} >
+                Ver todos
+              </a>
+            </p>
+          </div>
+        )}  
     </ProfileRelationsBoxWrapper>); 
 }
 
