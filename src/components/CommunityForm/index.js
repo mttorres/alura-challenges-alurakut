@@ -45,6 +45,13 @@ function CommunityForm(prop){
                         name= "image"
                         />
                     </div>
+                    <div>
+                        <h4 className="subTitle">Digite a URL do site da comunidade</h4>
+                        <input  placeholder= "Url" 
+                        name= "url" 
+                        aria-label= "Url" 
+                        type= "text" />
+                    </div>                    
                     <button>
                         Salvar Comunidade    
                     </button>       
