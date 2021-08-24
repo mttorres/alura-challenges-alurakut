@@ -1,6 +1,5 @@
 import React from "react";
 import { requestSaveCommu } from "../../requesters/community";
-import Box from "../Box";
 
 //this.handleCreateCommunity(e)
 
@@ -17,18 +16,7 @@ function CommunityForm(prop){
         });
     }
 
-    const [formOption, setFormOption] = React.useState(0);
-    const [scrap, setScrap] = React.useState('');
-
     return (
-    <Box>
-        <h2 className="subTitle">O que você deseja fazer?</h2>    
-            <div className="formOptions">
-                <button onClick={() => setFormOption(0)}>Criar comunidade</button>
-                <button onClick={() => setFormOption(1)}>Deixar um recado</button>
-            </div>
-            <hr />
-            {formOption === 0 ? (
                 <form onSubmit={handleCreateCommunity}>
                     <div>
                         <h4 className="subTitle">Qual vai ser o nome da sua comunidade?</h4>
@@ -55,25 +43,7 @@ function CommunityForm(prop){
                     <button>
                         Salvar Comunidade    
                     </button>       
-                </form>) :
-            (
-                <form onSubmit={handleCreateCommunity}>
-                    <div>
-                        <textarea
-                            placeholder="Escreva algo legal =)"
-                            value={scrap}
-                            //onChange={(e) => setDescription(e.target.value)}
-                            aria-label="Escreva algo legal =)"
-                            type="text"
-                            autoComplete="off"
-                         />
-                    </div>
-                    <button>
-                        Escrever Recado    
-                    </button>      
-                </form>
-            )}                
-        </Box>);
+                </form>)
 }
 
 export default CommunityForm;
